@@ -74,12 +74,7 @@ public class Owner extends SetCommand {
             }
             uuid = event.getNewOwner();
             boolean force = event.getEventResult() == Result.FORCE;
-            if (uuid == null) {
-                if (!force && !Permissions
-                    .hasPermission(player, Captions.PERMISSION_ADMIN_COMMAND_SET_OWNER.getTranslated(),
-                        true)) {
-                    return;
-                }
+            
                 PlotUnlinkEvent unlinkEvent = PlotSquared.get().getEventDispatcher()
                     .callUnlink(plot.getArea(), plot, false, false, PlotUnlinkEvent.REASON.NEW_OWNER);
                 if (unlinkEvent.getEventResult() == Result.DENY) {
