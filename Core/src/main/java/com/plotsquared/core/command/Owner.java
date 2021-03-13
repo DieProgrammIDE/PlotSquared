@@ -75,11 +75,6 @@ public class Owner extends SetCommand {
             uuid = event.getNewOwner();
             boolean force = event.getEventResult() == Result.FORCE;
             if (uuid == null) {
-                if (!force && !Permissions
-                    .hasPermission(player, Captions.PERMISSION_ADMIN_COMMAND_SET_OWNER.getTranslated(),
-                        true)) {
-                    return;
-                }
                 PlotUnlinkEvent unlinkEvent = PlotSquared.get().getEventDispatcher()
                     .callUnlink(plot.getArea(), plot, false, false, PlotUnlinkEvent.REASON.NEW_OWNER);
                 if (unlinkEvent.getEventResult() == Result.DENY) {
@@ -100,21 +95,7 @@ public class Owner extends SetCommand {
                 Captions.ALREADY_OWNER.send(player, MainUtil.getName(uuid));
                 return;
             }
-            if (!force && !Permissions
-                .hasPermission(player, Captions.PERMISSION_ADMIN_COMMAND_SET_OWNER)) {
-                if (other == null) {
-                    Captions.INVALID_PLAYER_OFFLINE.send(player, value);
-                    return;
-                }
-                int size = plots.size();
-                int currentPlots = (Settings.Limit.GLOBAL ?
-                    other.getPlotCount() :
-                    other.getPlotCount(plot.getWorldName())) + size;
-                if (currentPlots > other.getAllowedPlots()) {
-                    sendMessage(player, Captions.CANT_TRANSFER_MORE_PLOTS);
-                    return;
-                }
-            }
+            
             final UUID finalUUID = uuid;
             PlotSquared.get().getImpromptuUUIDPipeline().getSingle(uuid, (finalName, throwable) -> {
                 final boolean removeDenied = plot.isDenied(finalUUID);
